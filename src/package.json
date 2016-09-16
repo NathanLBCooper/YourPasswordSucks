@@ -1,0 +1,18 @@
+{
+  "name": "your-password-sucks",
+  "version": "1.0.0",
+  "description": "A tool to check your password against dictionary attacks",
+  "main": "main.js",
+  "scripts": {
+    "start": "tsc --sourcemap main.ts && start index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nathanlbcooper",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tslint": "^3.15.1",
+    "typescript": "^1.8.10"
+  }
+}
