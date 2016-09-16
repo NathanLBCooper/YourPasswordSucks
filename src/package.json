@@ -4,17 +4,20 @@
   "description": "A tool to check your password against dictionary attacks",
   "main": "main.js",
   "scripts": {
-    "start": "tsc --sourcemap main.ts && browserify main.js -o bundle.js && start index.html",
+    "start": "webpack-dev-server --inline --progress --port 8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "nathanlbcooper",
   "license": "BSD-3-Clause",
   "dependencies": {
     "axios": "^0.14.0",
-    "es6-promise": "^3.3.1"
+    "es6-promise": "^3.3.1",
+    "ts-loader": "^0.8.2"
   },
   "devDependencies": {
     "tslint": "^3.15.1",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.2"
   }
 }

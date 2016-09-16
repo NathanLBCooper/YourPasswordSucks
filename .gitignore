@@ -4,5 +4,4 @@ bower_components
 npm-debug.log
 
 # Javascript
-*.js
-*.js.map
+bundle.js
