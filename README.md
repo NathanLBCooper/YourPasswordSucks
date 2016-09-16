@@ -10,6 +10,8 @@ A tool to check your password against dictionary attacks
 - Node.js and npm: `choco install nodejs.install`
 - Visual Studio Code: `choco install visualstudiocode`
 
+- install browserify `npm install -g browserify`
+
 `npm install`
 
 ## Running

@@ -4,12 +4,13 @@
   "description": "A tool to check your password against dictionary attacks",
   "main": "main.js",
   "scripts": {
-    "start": "tsc --sourcemap main.ts && start index.html",
+    "start": "tsc --sourcemap main.ts && browserify main.js -o bundle.js && start index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "nathanlbcooper",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "axios": "^0.14.0"
   },
   "devDependencies": {
     "tslint": "^3.15.1",

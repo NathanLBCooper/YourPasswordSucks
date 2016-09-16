@@ -1,10 +1,21 @@
+import axios from 'axios';
+
 class Greeter {
-    constructor(public greeting: string) { }
-    greet() {
-        return "<h1>" + this.greeting + "</h1>";
+    constructor() { }
+    greet(): any {
+        return axios.get('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/10_million_password_list_top_100.txt')
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            console.log(error);
+            return error;
+        });
     }
 };
 
-var greeter = new Greeter("Hello, world!");
+var greeter = new Greeter();
     
-document.body.innerHTML = greeter.greet();
+greeter.greet().then(function(response) {
+    document.body.innerHTML = response.data;
+})
