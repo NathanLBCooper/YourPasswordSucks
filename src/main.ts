@@ -1,4 +1,4 @@
-import { PasswordChecker } from "./passwordChecker";
+import { PasswordChecker } from "./password/passwordChecker";
 
 class Main {
     public onSubmitPassword(): void {

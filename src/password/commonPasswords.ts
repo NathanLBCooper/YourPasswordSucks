@@ -10,7 +10,7 @@ export class CommonPasswords {
     public get(): Promise<string[]> {
         return axios.get(passwordFileLocation)
         .then(function (response) {
-            return response.data.split("\n");;
+            return response.data.toLowerCase().split("\n");;
         })
         .catch(function (error) {
             console.log(error);

@@ -12,7 +12,7 @@ export class PasswordChecker {
 
     public isPasswordWeak(password: string): Promise<boolean> {
         return this.commonPasswords.get().then(passwords => { 
-            return passwords.indexOf(password) !== -1;
+            return passwords.indexOf(password.toLowerCase()) !== -1;
         });
     }
 }
