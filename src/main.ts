@@ -1,15 +1,15 @@
-import {AxiosResponse} from 'axios';
-import {Promise} from 'es6-promise';
-
-import { CommonPasswords } from './commonPasswords';
+import { PasswordChecker } from "./passwordChecker";
 
 class Main {
-    public run() {
-        let passwords = new CommonPasswords();
-        passwords.get().then(response => {
-            document.body.innerHTML = JSON.stringify(response);
-        })
+    public onSubmitPassword(): void {
+        let password = document.getElementById("password").innerText;
+        let checker = new PasswordChecker();
+        checker.isPasswordWeak(password).then(result => { 
+            document.getElementById("answer").innerText = result ? "Weak password" : "Okay password";
+        } );
     }
 };
 
-new Main().run();
+let main = new Main();
+
+window['onSubmitPassword'] = main.onSubmitPassword;
