@@ -1,4 +1,5 @@
 import {Promise} from "es6-promise";
+import * as _ from "lodash";
 
 import { CommonPasswords } from "./commonPasswords";
 
@@ -10,6 +11,8 @@ export class PasswordChecker {
     }
 
     public isPasswordWeak(password: string): Promise<boolean> {
-        return this.commonPasswords.get().then(passwords => { return false });
+        return this.commonPasswords.get().then(passwords => { 
+            return passwords.indexOf(password) !== -1;
+        });
     }
 }
