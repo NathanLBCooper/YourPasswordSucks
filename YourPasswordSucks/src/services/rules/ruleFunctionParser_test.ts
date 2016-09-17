@@ -30,11 +30,15 @@ describe("RuleFunctionParser", () => {
     expect(rule.transform("ohhi")).to.be.equal("ohhiohhiohhiohhi");
   })
 
+  it("Can create rule function with letter number param", () => {
+    const rule = parser.parse("pZ");
+    expect(rule.transform("a")).to.be.equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  })
+
   it("Unknown first char creates noop rule function", () => {
     const rule = parser.parse("å");
     expect(rule.transform("ohhi")).to.be.equal("ohhi");
   })
-
 
   it("Unneeded params are discarded", () => {
     const rule = parser.parse("r3");

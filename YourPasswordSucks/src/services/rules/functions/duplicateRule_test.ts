@@ -14,6 +14,11 @@ describe("DuplicateRule", () => {
         expect(rule.transform("heellleo")).to.be.equal("heellleoheellleoheellleoheellleo");
     })
 
+    it("duplicates 36 times", () => {
+        const rule = new DuplicateRule(36);
+        expect(rule.transform("a")).to.be.equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    })
+
     it("duplicates 0 times", () => {
         const rule = new DuplicateRule(0);
         expect(rule.transform("heellleo")).to.be.equal("heellleo");

@@ -9,6 +9,9 @@ import { RotateLeftRule } from './functions/rotateLeftRule';
 import { RotateRightRule } from './functions/rotateRightRule';
 import { AppendCharacterRule } from './functions/appendCharacterRule';
 import { PrependCharacterRule } from './functions/prependCharacterRule';
+import { TruncateLeftRule } from './functions/truncateLeftRule';
+import { TruncateRightRule } from './functions/truncateRightRule';
+import { DeleteAtNRule } from './functions/deleteAtNRule';
 
 function CheckParam(params: string[], action :(params: string[]) => IRule, expectedNumber: number = 1) {
     if(params.length < expectedNumber){
@@ -21,11 +24,11 @@ function CheckNumberParam(params: string[], action :(params: number) => IRule) {
     if(params.length < 1){
         return new NoopRule();
     }
-    const num = +params[0];
+    const num = parseInt(params[0], 36);
     if(isNaN(num)) {
         return new NoopRule();
     }
-    return action(+params[0]);
+    return action(num);
 }
 
 
@@ -46,6 +49,9 @@ functionMap["{"] = params => new RotateLeftRule();
 functionMap["}"] = params => new RotateRightRule();
 functionMap["$"] = params => CheckParam(params, prms => new AppendCharacterRule(prms[0]));
 functionMap["^"] = params => CheckParam(params, prms => new PrependCharacterRule(prms[0]));
+functionMap["["] = params => new TruncateLeftRule();
+functionMap["]"] = params => new TruncateRightRule();
+functionMap["D"] = params => CheckNumberParam(params, prm => new DeleteAtNRule(prm)); // todo mix with ommit range
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
