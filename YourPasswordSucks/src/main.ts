@@ -1,6 +1,6 @@
 import { PasswordChecker } from "./services/checkers/passwordChecker";
 import { PasswordData } from "./services/data/passwordData";
-import { NoopRule } from "./services/rules/noopRule";
+import { NoopRule } from "./services/rules/functions/noopRule";
 
 class Main {
     public onSubmitPassword(): void {

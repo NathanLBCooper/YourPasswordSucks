@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as Moq from "typemoq";
 
 import { PasswordChecker } from "./passwordChecker";
-import { NoopRule } from "../rules/noopRule";
+import { NoopRule } from "../rules/functions/noopRule";
 
 describe("PasswordChecker", () => {
 
@@ -15,7 +15,7 @@ describe("PasswordChecker", () => {
     const result = checker.isMatch("secretsquirrel");
     expect(result.isMatch).to.be.equal(true);
     expect(result.reason).to.be.equal(
-        "\"secretsquirrel\" matches \"secretsquirrel\" in dictionary, with rule \"<no changes>\""
+        "\"secretsquirrel\" matches \"secretsquirrel\" in dictionary, with rule \"Do Nothing\""
         );
   })
 
