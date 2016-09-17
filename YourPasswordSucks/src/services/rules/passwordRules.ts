@@ -5,7 +5,7 @@
 // }
 
 // interface IRule {
-//     reverse(password: string);
+//      reverse(password: string);
 // }
 
 // class NothingRule {

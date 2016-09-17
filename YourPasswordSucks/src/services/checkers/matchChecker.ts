@@ -1,6 +1,3 @@
-import {Promise} from "es6-promise";
-import * as _ from "lodash";
-
 import { MatchResult } from './matchResult';
 import { IMatchChecker } from './iMatchChecker';
 import { ExactMatchChecker } from './exactMatchChecker';
