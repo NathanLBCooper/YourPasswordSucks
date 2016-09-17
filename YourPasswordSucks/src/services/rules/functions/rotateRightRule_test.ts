@@ -8,4 +8,9 @@ describe("RotateRightRule", () => {
         const rule = new RotateRightRule();
         expect(rule.transform("heellleo")).to.be.equal("oheellle");
     })
+
+    it("Empty string Rotates right", () => {
+        const rule = new RotateRightRule();
+        expect(rule.transform("")).to.be.equal("");
+    })
 });

@@ -1,12 +1,18 @@
 import { PasswordChecker } from "./services/checkers/passwordChecker";
 import { PasswordData } from "./services/data/passwordData";
 import { NoopRule } from "./services/rules/functions/noopRule";
+import { RuleFunctionParser } from './services/rules/ruleFunctionParser';
+import { RuleParser } from './services/rules/ruleParser';
 
 class Main {
     public onSubmitPassword(): void {
         const password = (<HTMLInputElement>document.getElementById("password")).value;
         const passwordFetcher = new PasswordData();
-        const rules = [ new NoopRule() ] // for now no rules
+
+        const ruleFunctionParser = new RuleFunctionParser();
+        const ruleParser = new RuleParser(ruleFunctionParser);
+
+        const rules = [ ruleParser.parse(":"), ruleParser.parse("$1") ]; // todo
 
         passwordFetcher.getLowerCasePasswords().then(
             fetchedPasswords => {

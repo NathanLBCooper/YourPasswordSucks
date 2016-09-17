@@ -51,6 +51,11 @@ describe("RuleFunctionParser", () => {
     expect(rule.transform("ohhi")).to.be.equal("ohhi");
   })
 
+  it("Bad number param returns no-op", () => {
+    const rule = parser.parse("p+");
+    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+  })
+
   it("No parameters returns no-op", () => {
     const rule = parser.parse("");
     expect(rule.transform("ohhi")).to.be.equal("ohhi");

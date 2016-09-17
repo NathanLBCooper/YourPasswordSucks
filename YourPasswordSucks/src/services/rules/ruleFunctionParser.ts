@@ -21,6 +21,10 @@ function CheckNumberParam(params: string[], action :(params: number) => IRule) {
     if(params.length < 1){
         return new NoopRule();
     }
+    const num = +params[0];
+    if(isNaN(num)) {
+        return new NoopRule();
+    }
     return action(+params[0]);
 }
 
@@ -45,7 +49,7 @@ functionMap["^"] = params => CheckParam(params, prms => new PrependCharacterRule
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
-    public parse(functionStr: string) {
+    public parse(functionStr: string): IRule {
         const functionStrArr = functionStr.split("");
         const firstChar = functionStrArr[0];
         if(!(firstChar in functionMap)) {
