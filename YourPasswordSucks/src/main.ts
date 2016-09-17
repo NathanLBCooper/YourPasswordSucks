@@ -1,16 +1,19 @@
-import { MatchChecker } from "./services/checkers/matchChecker";
+import { PasswordChecker } from "./services/checkers/passwordChecker";
 import { PasswordData } from "./services/data/passwordData";
+import { NoopRule } from "./services/rules/noopRule";
 
 class Main {
     public onSubmitPassword(): void {
-        let password = (<HTMLInputElement>document.getElementById("password")).value;
-        let commonPasswords = new PasswordData();
-        let checker = new MatchChecker();
+        const password = (<HTMLInputElement>document.getElementById("password")).value;
+        const passwordFetcher = new PasswordData();
+        const rules = [ new NoopRule() ] // for now no rules
 
-        commonPasswords.getLowerCasePasswords().then(
+        passwordFetcher.getLowerCasePasswords().then(
             fetchedPasswords => {
-                let result = checker.isMatch(password, fetchedPasswords);
-                let answer = result.isMatch ? "Weak password" : "Okay password";
+                const checker = new PasswordChecker(rules, fetchedPasswords);
+
+                const result = checker.isMatch(password);
+                let answer = result.isMatch ? "Weak password: " : "Okay password: ";
                 answer += " " + result.reason || "";
                 document.getElementById("answer").innerText = answer;
             }
@@ -18,6 +21,6 @@ class Main {
     }
 };
 
-let main = new Main();
+const main = new Main();
 
 window['onSubmitPassword'] = main.onSubmitPassword;
