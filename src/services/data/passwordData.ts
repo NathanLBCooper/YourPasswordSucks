@@ -6,11 +6,11 @@ const passwordFileLocation =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
     "10_million_password_list_top_100.txt";
 
-export class CommonPasswords {
-    public get(): Promise<string[]> {
+export class PasswordData {
+    public getLowerCasePasswords(): Promise<string[]> {
         return axios.get(passwordFileLocation)
         .then(function (response) {
-            return response.data.toLowerCase().split("\n");;
+            return response.data.split("\n");;
         })
         .catch(function (error) {
             console.log(error);
