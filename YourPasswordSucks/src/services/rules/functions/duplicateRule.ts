@@ -2,11 +2,11 @@
 export class DuplicateRule {
     constructor(private times: number) {}
 
-    transform(text: string): string {
+    public transform(text: string): string {
         return _.repeat(text, this.times + 1);
     }
 
-    toString(): string {
+    public toString(): string {
         return "Append duplicated word" + this.times + "times";
     }
 }

@@ -2,11 +2,11 @@
 export class PrependCharacterRule {
     constructor(private characterToPrepend: string) {}
 
-    transform(text: string): string {
+    public transform(text: string): string {
         return this.characterToPrepend + text;
     }
 
-    toString(): string {
+    public toString(): string {
         return "Prepend character X to front";
     }
 }

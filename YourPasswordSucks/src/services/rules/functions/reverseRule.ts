@@ -1,11 +1,11 @@
 /** Reverse the entire word */
 export class ReverseRule {
-    transform(text: string): string {
+    public transform(text: string): string {
         // doesn't necessarily support unicode
         return text.split("").reverse().join("");
     }
 
-    toString(): string {
+    public toString(): string {
         return "Reverse the entire word";
     }
 }

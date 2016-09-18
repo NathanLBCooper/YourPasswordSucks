@@ -1,10 +1,10 @@
 /** Duplicate word reversed  */
 export class DuplicateReverseRule {
-    transform(text: string): string {
+    public transform(text: string): string {
         return text + text.split("").reverse().join("");
     }
 
-    toString(): string {
+    public toString(): string {
         return "Duplicate word reversed";
     }
 }

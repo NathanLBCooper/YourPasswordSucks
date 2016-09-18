@@ -2,11 +2,11 @@
 export class AppendCharacterRule {
     constructor(private characterToAppend: string) {}
 
-    transform(text: string): string {
+    public transform(text: string): string {
         return text + this.characterToAppend;
     }
 
-    toString(): string {
+    public toString(): string {
         return "Append character X to end";
     }
 }

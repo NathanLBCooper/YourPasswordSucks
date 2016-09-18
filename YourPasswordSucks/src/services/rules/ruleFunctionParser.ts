@@ -11,7 +11,7 @@ import { AppendCharacterRule } from './functions/appendCharacterRule';
 import { PrependCharacterRule } from './functions/prependCharacterRule';
 import { TruncateLeftRule } from './functions/truncateLeftRule';
 import { TruncateRightRule } from './functions/truncateRightRule';
-import { DeleteAtNRule } from './functions/deleteAtNRule';
+import { OmitRangeRule } from './functions/omitRangeRule';
 
 function CheckParam(params: string[], action :(params: string[]) => IRule, expectedNumber: number = 1) {
     if(params.length < expectedNumber){
@@ -20,15 +20,21 @@ function CheckParam(params: string[], action :(params: string[]) => IRule, expec
     return action(params);
 }
 
-function CheckNumberParam(params: string[], action :(params: number) => IRule) {
-    if(params.length < 1){
+function CheckNumberParam(params: string[], action :(params: number[]) => IRule, expectedNumber: number = 1) {
+    if(params.length < expectedNumber){
         return new NoopRule();
     }
-    const num = parseInt(params[0], 36);
-    if(isNaN(num)) {
-        return new NoopRule();
+
+    let nums: number[] = [];
+    for(let i = 0; i < expectedNumber; i++){
+        const num = parseInt(params[i], 36);
+        if(isNaN(num)) {
+            return new NoopRule();
+        }
+        nums.push(num);
     }
-    return action(num);
+
+    return action(nums);
 }
 
 
@@ -43,7 +49,7 @@ var functionMap: { [ruleChar: string]: (params: string[]) => IRule; } = { };
 functionMap[":"] = params => new NoopRule();
 functionMap["r"] = params => new ReverseRule();
 functionMap["d"] = params => new DuplicateRule(1);
-functionMap["p"] = params => CheckNumberParam(params, prm => new DuplicateRule(prm));
+functionMap["p"] = params => CheckNumberParam(params, prm => new DuplicateRule(prm[0]));
 functionMap["f"] = params => new DuplicateReverseRule();
 functionMap["{"] = params => new RotateLeftRule();
 functionMap["}"] = params => new RotateRightRule();
@@ -51,7 +57,8 @@ functionMap["$"] = params => CheckParam(params, prms => new AppendCharacterRule(
 functionMap["^"] = params => CheckParam(params, prms => new PrependCharacterRule(prms[0]));
 functionMap["["] = params => new TruncateLeftRule();
 functionMap["]"] = params => new TruncateRightRule();
-functionMap["D"] = params => CheckNumberParam(params, prm => new DeleteAtNRule(prm)); // todo mix with ommit range
+functionMap["D"] = params => CheckNumberParam(params, prm => new OmitRangeRule(prm[0], 1));
+functionMap["O"] = params => CheckNumberParam(params, prm => new OmitRangeRule(prm[0], prm[1]), 2);
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
@@ -62,6 +69,7 @@ export class RuleFunctionParser {
             // unknown
             return new NoopRule();
         }
+
         return functionMap[firstChar](
             _.slice(functionStrArr, 1, functionStrArr.length)
             );

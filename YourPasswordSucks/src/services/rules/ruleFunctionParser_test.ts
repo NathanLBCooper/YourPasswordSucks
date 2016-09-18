@@ -30,6 +30,11 @@ describe("RuleFunctionParser", () => {
     expect(rule.transform("ohhi")).to.be.equal("ohhiohhiohhiohhi");
   })
 
+  it("Can create rule function with two number params", () => {
+    const rule = parser.parse("O14");
+    expect(rule.transform("p@ssW0rd")).to.be.equal("p0rd");
+  })
+
   it("Can create rule function with letter number param", () => {
     const rule = parser.parse("pZ");
     expect(rule.transform("a")).to.be.equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
