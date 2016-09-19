@@ -9,7 +9,7 @@ export class OmitRangeRule {
     public transform: (text:string) => string;
 
     public toString(): string {
-        return "Extracts " + this.numberToRemove +
+        return "Ommits " + this.numberToRemove +
             " characters, starting at position " + this.position;
     }
 

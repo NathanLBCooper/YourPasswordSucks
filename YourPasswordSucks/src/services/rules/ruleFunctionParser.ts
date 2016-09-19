@@ -12,6 +12,7 @@ import { PrependCharacterRule } from './functions/prependCharacterRule';
 import { TruncateLeftRule } from './functions/truncateLeftRule';
 import { TruncateRightRule } from './functions/truncateRightRule';
 import { OmitRangeRule } from './functions/omitRangeRule';
+import { ExtractRangeRule } from './functions/extractRangeRule';
 
 function CheckParam(params: string[], action :(params: string[]) => IRule, expectedNumber: number = 1) {
     if(params.length < expectedNumber){
@@ -58,6 +59,7 @@ functionMap["^"] = params => CheckParam(params, prms => new PrependCharacterRule
 functionMap["["] = params => new TruncateLeftRule();
 functionMap["]"] = params => new TruncateRightRule();
 functionMap["D"] = params => CheckNumberParam(params, prm => new OmitRangeRule(prm[0], 1));
+functionMap["x"] = params => CheckNumberParam(params, prm => new ExtractRangeRule(prm[0], prm[1]), 2);
 functionMap["O"] = params => CheckNumberParam(params, prm => new OmitRangeRule(prm[0], prm[1]), 2);
 
 export class RuleFunctionParser {
