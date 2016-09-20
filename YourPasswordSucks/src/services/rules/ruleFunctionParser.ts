@@ -14,6 +14,7 @@ import { TruncateRightRule } from "./functions/truncateRightRule";
 import { OmitRangeRule } from "./functions/omitRangeRule";
 import { ExtractRangeRule } from "./functions/extractRangeRule";
 import { InsertAtNRule } from "./functions/InsertAtNRule";
+import { OverwriteAtNRule } from "./functions/OverwriteAtNRule";
 
 function CheckExists<T>(param: T): T {
     // Test for bad values and reading beyond the arrays
@@ -32,7 +33,7 @@ function ParseBase36Number(param: string): number {
     if(isNaN(num)) {
         throw new Error(param + "is not a valid number");
     }
-    
+
     return num;
 }
 
@@ -59,6 +60,7 @@ functionMap["D"] = params => new OmitRangeRule(ParseBase36Number(params[0]), 1);
 functionMap["x"] = params => new ExtractRangeRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
 functionMap["O"] = params => new OmitRangeRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
 functionMap["i"] = params => new InsertAtNRule(ParseBase36Number(params[0]),CheckExists(params[1]));
+functionMap["o"] = params => new OverwriteAtNRule(ParseBase36Number(params[0]),CheckExists(params[1]));
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule

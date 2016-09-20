@@ -14,7 +14,7 @@ describe("InsertAtNRule", () => {
         expect(rule.transform("p@ssW0rd")).to.be.equal("$p@ssW0rd");
     })
 
-    it("Inserts w at position 8, the end", () => {
+    it("Inserts w at position 8, one past the end", () => {
         const rule = new InsertAtNRule(8, "w")
         expect(rule.transform("p@ssW0rd")).to.be.equal("p@ssW0rdw");
     })
