@@ -15,34 +15,25 @@ import { OmitRangeRule } from "./functions/omitRangeRule";
 import { ExtractRangeRule } from "./functions/extractRangeRule";
 import { InsertAtNRule } from "./functions/InsertAtNRule";
 
-function ParseStrParam(param: string): any {
-    return { valid: true, value: param };
+function CheckExists<T>(param: T): T {
+    // Test for bad values and reading beyond the arrays
+    if (param == null) {
+        throw new Error(param + "is not a valid value." + 
+        "There probably weren't enough parameters supplied");
+    }
+
+    return param;
 }
 
-function ParseBase36NumberParam(param: string): any {
+function ParseBase36Number(param: string): number {
+    // Base 36 is 1-9-A-Z
+    CheckExists(param);
     const num = parseInt(param, 36);
     if(isNaN(num)) {
-        return { valid: false, value: undefined };
+        throw new Error(param + "is not a valid number");
     }
-    return { valid: true, value: num };
-}
-
-/** Helps to convert string[] to an IRule via parsed any[]. Not even slightly typesafe. */
-function Parse(params: string[], action: (params: any[]) => IRule, parsers: ((param: string) => any)[]): IRule {
-    if (params.length < parsers.length) {
-        return new NoopRule();
-    }
-
-    let parsedParams = new Array<any>();
-    for (let i = 0; i < parsers.length; i++) {
-        const parsed = parsers[i](params[i]);
-        if(!parsed.valid) {
-            return new NoopRule();
-        }
-        parsedParams.push(parsed.value);
-    }
-
-    return action(parsedParams);
+    
+    return num;
 }
 
 var functionMap: { [ruleChar: string]: (params: string[]) => IRule; } = { };
@@ -56,18 +47,18 @@ var functionMap: { [ruleChar: string]: (params: string[]) => IRule; } = { };
 functionMap[":"] = params => new NoopRule();
 functionMap["r"] = params => new ReverseRule();
 functionMap["d"] = params => new DuplicateRule(1);
-functionMap["p"] = params => Parse(params, prm => new DuplicateRule(prm[0]), [ParseBase36NumberParam]);
+functionMap["p"] = params => new DuplicateRule(ParseBase36Number(params[0]));
 functionMap["f"] = params => new DuplicateReverseRule();
 functionMap["{"] = params => new RotateLeftRule();
 functionMap["}"] = params => new RotateRightRule();
-functionMap["$"] = params => Parse(params, prms => new AppendCharacterRule(prms[0]), [ParseStrParam]);
-functionMap["^"] = params => Parse(params, prms => new PrependCharacterRule(prms[0]), [ParseStrParam]);
+functionMap["$"] = params => new AppendCharacterRule(CheckExists(params[0]));
+functionMap["^"] = params => new PrependCharacterRule(CheckExists(params[0]));
 functionMap["["] = params => new TruncateLeftRule();
 functionMap["]"] = params => new TruncateRightRule();
-functionMap["D"] = params => Parse(params, prm => new OmitRangeRule(prm[0], 1), [ParseBase36NumberParam]);
-functionMap["x"] = params => Parse(params, prm => new ExtractRangeRule(prm[0], prm[1]), [ParseBase36NumberParam, ParseBase36NumberParam]);
-functionMap["O"] = params => Parse(params, prm => new OmitRangeRule(prm[0], prm[1]), [ParseBase36NumberParam, ParseBase36NumberParam]);
-functionMap["i"] = params => Parse(params, prm => new InsertAtNRule(prm[0], prm[1]), [ParseBase36NumberParam, ParseStrParam])
+functionMap["D"] = params => new OmitRangeRule(ParseBase36Number(params[0]), 1);
+functionMap["x"] = params => new ExtractRangeRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
+functionMap["O"] = params => new OmitRangeRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
+functionMap["i"] = params => new InsertAtNRule(ParseBase36Number(params[0]),CheckExists(params[1]));
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
@@ -79,8 +70,13 @@ export class RuleFunctionParser {
             return new NoopRule();
         }
 
-        return functionMap[firstChar](
-            _.slice(functionStrArr, 1, functionStrArr.length)
-            );
+        try {
+            return functionMap[firstChar](
+                _.slice(functionStrArr, 1, functionStrArr.length)
+                );
+        }
+        catch (error) {
+            return new NoopRule();
+        }
     }
 }
