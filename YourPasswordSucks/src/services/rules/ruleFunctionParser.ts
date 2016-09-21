@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { IRule } from "./iRule";
 import { NoopRule } from "./functions/noopRule";
 import { ReverseRule } from "./functions/reverseRule";
-import { DuplicateRule } from "./functions/duplicateRule";
+import { DuplicateWordRule } from "./functions/duplicateWordRule";
 import { DuplicateReverseRule } from "./functions/duplicateReverseRule";
 import { RotateLeftRule } from "./functions/rotateLeftRule";
 import { RotateRightRule } from "./functions/rotateRightRule";
@@ -13,10 +13,13 @@ import { TruncateLeftRule } from "./functions/truncateLeftRule";
 import { TruncateRightRule } from "./functions/truncateRightRule";
 import { OmitRangeRule } from "./functions/omitRangeRule";
 import { ExtractRangeRule } from "./functions/extractRangeRule";
-import { InsertAtNRule } from "./functions/InsertAtNRule";
-import { OverwriteAtNRule } from "./functions/OverwriteAtNRule";
-import { TruncateAtNRule } from "./functions/TruncateAtNRule";
-import { ReplaceRule } from "./functions/ReplaceRule";
+import { InsertAtNRule } from "./functions/insertAtNRule";
+import { OverwriteAtNRule } from "./functions/overwriteAtNRule";
+import { TruncateAtNRule } from "./functions/truncateAtNRule";
+import { ReplaceRule } from "./functions/replaceRule";
+import { DuplicateFirstNRule } from "./functions/duplicateFirstNRule";
+import { DuplicateLastNRule } from "./functions/duplicateLastNRule";
+import { DuplicateAllCharsRule } from "./functions/duplicateAllCharsRule";
 
 function CheckExists<T>(param: T): T {
     // Test for bad values and reading beyond the arrays
@@ -66,6 +69,9 @@ functionMap["o"] = params => new OverwriteAtNRule(ParseBase36Number(params[0]),C
 functionMap["'"] = params => new TruncateAtNRule(ParseBase36Number(params[0]));
 functionMap["s"] = params => new ReplaceRule(CheckExists(params[0]), CheckExists(params[1]));
 functionMap["@"] = params => new ReplaceRule(CheckExists(params[0]), "");
+functionMap["z"] = params => new DuplicateFirstNRule(ParseBase36Number(params[0]));
+functionMap["Z"] = params => new DuplicateLastNRule(ParseBase36Number(params[0]));
+functionMap["q"] = params => new DuplicateAllCharsRule();
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule

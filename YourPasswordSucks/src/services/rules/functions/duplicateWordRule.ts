@@ -1,5 +1,5 @@
 /** Append duplicated word N times */
-export class DuplicateRule {
+export class DuplicateWordRule {
     constructor(private times: number) {}
 
     public transform(text: string): string {
