@@ -52,8 +52,8 @@ var functionMap: { [ruleChar: string]: (params: string[]) => IRule; } = { };
 
 functionMap[":"] = params => new NoopRule();
 functionMap["r"] = params => new ReverseRule();
-functionMap["d"] = params => new DuplicateRule(1);
-functionMap["p"] = params => new DuplicateRule(ParseBase36Number(params[0]));
+functionMap["d"] = params => new DuplicateWordRule(1);
+functionMap["p"] = params => new DuplicateWordRule(ParseBase36Number(params[0]));
 functionMap["f"] = params => new DuplicateReverseRule();
 functionMap["{"] = params => new RotateLeftRule();
 functionMap["}"] = params => new RotateRightRule();

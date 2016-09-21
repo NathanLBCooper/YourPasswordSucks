@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { DuplicateWordRule } from "./duplicateRule";
+import { DuplicateWordRule } from "./duplicateWordRule";
 
 describe("DuplicateWordRule", () => {
 
