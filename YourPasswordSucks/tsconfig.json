@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "types": [ "assertion-error", "chai", "es6-promise", "lodash", "mocha" ]
   },
   "files": [
-    "./src/main.ts",
-    "typings/tsd.d.ts"
+    "./src/main.ts"
   ]
 }
