@@ -6,68 +6,81 @@ describe("RuleFunctionParser", () => {
   const parser = new RuleFunctionParser();
 
   it("Can create rule function", () => {
-    const rule = parser.parse("r");
-    expect(rule.transform("ohhi")).to.be.equal("ihho");
+    const ruleStr = "r";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ihho");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Can create another rule function", () => {
-    const rule = parser.parse("{");
-    expect(rule.transform("ohhi")).to.be.equal("hhio");
+    const ruleStr = "{";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("hhio");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
   
   it("Can create noop rule function", () => {
-    const rule = parser.parse(":");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+    const ruleStr = ":";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Can create rule function with string param", () => {
-    const rule = parser.parse("$3");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi3");
+    const ruleStr = "$3";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi3");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Can create rule function with number param", () => {
-    const rule = parser.parse("p3");
-    expect(rule.transform("ohhi")).to.be.equal("ohhiohhiohhiohhi");
+    const ruleStr = "p3";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhiohhiohhiohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Can create rule function with two number params", () => {
-    const rule = parser.parse("O14");
-    expect(rule.transform("p@ssW0rd")).to.be.equal("p0rd");
+    const ruleStr = "O14";
+    expect(parser.parse(ruleStr).transform("p@ssW0rd")).to.be.equal("p0rd");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Can create rule function with letter number param", () => {
-    const rule = parser.parse("pZ");
-    expect(rule.transform("a")).to.be.equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    const ruleStr = "pZ";
+    expect(parser.parse(ruleStr).transform("a")).to.be.equal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Unknown first char creates noop rule function", () => {
-    const rule = parser.parse("å");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+    const ruleStr = "å";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(false);
   })
 
   it("Unneeded params are discarded", () => {
-    const rule = parser.parse("r3");
-    expect(rule.transform("ohhi")).to.be.equal("ihho");
+    const ruleStr = "r3";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ihho");
+    expect(parser.canParse(ruleStr)).to.be.equal(true);
   })
 
   it("Missing params returns no-op", () => {
-    const rule = parser.parse("$");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+    const ruleStr = "$";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(false);
   })
 
   it("Missing number param returns no-op", () => {
-    const rule = parser.parse("p");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+    const ruleStr = "p";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(false);
   })
 
   it("Bad number param returns no-op", () => {
-    const rule = parser.parse("p+");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
+    const ruleStr = "p+";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(false);
   })
 
   it("No parameters returns no-op", () => {
-    const rule = parser.parse("");
-    expect(rule.transform("ohhi")).to.be.equal("ohhi");
-    // but null with throw
+    const ruleStr = "";
+    expect(parser.parse(ruleStr).transform("ohhi")).to.be.equal("ohhi");
+    expect(parser.canParse(ruleStr)).to.be.equal(false);
+    // but null will throw
   })
 });

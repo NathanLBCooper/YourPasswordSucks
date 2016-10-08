@@ -3,8 +3,9 @@ import { PasswordChecker } from "./services/passwordChecker";
 import { PasswordData } from "./services/data/passwordData";
 import { RuleData } from "./services/data/ruleData";
 import { NoopRule } from "./services/rules/functions/noopRule";
-import { RuleFunctionParser } from './services/rules/ruleFunctionParser';
-import { RuleParser } from './services/rules/ruleParser';
+import { RuleFunctionParser } from "./services/rules/ruleFunctionParser";
+import { RuleParser } from "./services/rules/ruleParser";
+import { RuleCompatibility, CompatibilityResult } from "./ruleCompatibility";
 
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
@@ -14,7 +15,7 @@ const ruleFileLocation =
 
 class Main {
     public onSubmitPassword(): void {
-        SetAnswer("calculating");
+        StartCalculating();
         const password = GetPasswordInput();
 
         const passwordChecker = new PasswordChecker(
@@ -29,6 +30,19 @@ class Main {
                 answer += "/n" + match.reason || "";
             }
             SetAnswer(answer);
+            StopCalculating();
+        });
+    }
+
+    public onSubmitCompabilityTest(): void {
+        StartCalculating();
+        const ruleCompatibility = new RuleCompatibility(
+            new RuleData(ruleFileLocation),
+            new RuleParser(new RuleFunctionParser()));
+
+        ruleCompatibility.Check().then( result => {
+            SetCompabilityResult(result);
+            StopCalculating();
         });
     }
 };
@@ -41,6 +55,19 @@ function GetPasswordInput(): string {
     return (<HTMLInputElement>document.getElementById("password")).value;
 }
 
+function SetCompabilityResult(result: CompatibilityResult){
+    document.getElementById("compatibilityResults").innerText = result.toString();
+}
+
+function StartCalculating() {
+    document.getElementById("calculating").style.display = '';
+}
+
+function StopCalculating() {
+    document.getElementById("calculating").style.display = 'none';
+}
+
 const main = new Main();
 
 window['onSubmitPassword'] = main.onSubmitPassword;
+window['onSubmitCompabilityTest'] = main.onSubmitCompabilityTest;

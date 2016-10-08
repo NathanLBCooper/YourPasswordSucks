@@ -1,6 +1,6 @@
 import { IRule } from './iRule';
 import { RuleFunctionParser } from './ruleFunctionParser';
-import { NoopRule } from './functions/noopRule';
+import { UnknownRule } from './functions/unknownRule';
 import { CompositeRule } from './compositeRule';
 
 export class RuleParser {
@@ -11,14 +11,30 @@ export class RuleParser {
     public parse(ruleStr: string): IRule {
         const functionStrs = ruleStr.split(" ");
         let ruleFuncs: IRule[] = [];
+        if (functionStrs.length < 1) {
+            return new UnknownRule(ruleStr);
+        }
+
         for(const funcStr of functionStrs) {
             ruleFuncs.push(this.ruleFunctionParser.parse(funcStr))
         }
 
-        if(ruleFuncs.length < 1) {
-            return new NoopRule();
-        }
-        
         return new CompositeRule(ruleFuncs);
+    }
+
+    public canParse(ruleStr: string): boolean {
+        const functionStrs = ruleStr.split(" ");
+
+        if (functionStrs.length < 1) {
+            return false;
+        }
+
+        for(const funcStr of functionStrs) {
+            if (!this.ruleFunctionParser.canParse(funcStr)){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -93,4 +93,25 @@ export class RuleFunctionParser {
             return new UnknownRule(functionStr);
         }
     }
+
+    /** Code duplication. But be careful combining with parse,
+     * parse needs to be performant*/
+    public canParse(functionStr: string): boolean {
+        const functionStrArr = functionStr.split("");
+        const firstChar = functionStrArr[0];
+        if(!(firstChar in functionMap)) {
+            return false;
+        }
+
+        try {
+            functionMap[firstChar](
+                _.slice(functionStrArr, 1, functionStrArr.length)
+                );
+        }
+        catch (error) {
+            return false;
+        }
+
+        return true;
+    }
 }
