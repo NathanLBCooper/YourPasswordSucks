@@ -73,7 +73,7 @@ describe("PasswordChecker Integration Tests", () => {
                     "\"password\" matches \"password\""
                     );
                 expect(matches[1].reason).to.contain(
-                    "unknown rule: c"
+                    "Ignored rule"
                     );
             }
             );
