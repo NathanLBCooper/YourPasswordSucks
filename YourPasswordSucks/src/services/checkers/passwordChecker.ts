@@ -8,7 +8,7 @@ export class PasswordChecker {
         for (const rule of this.rules) {
             for (const dictionaryItem of this.passwordDictionary) {
                 const transformedItem = rule.transform(dictionaryItem);
-                if (transformedItem.toLowerCase() == password){
+                if (transformedItem.toUpperCase() === password.toUpperCase()){
                     return new MatchResult(password, dictionaryItem, rule);
                 }
             }

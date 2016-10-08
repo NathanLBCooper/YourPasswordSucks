@@ -14,7 +14,7 @@ class Main {
 
         const rules = [ ruleParser.parse(":"), ruleParser.parse("$1") ]; // todo
 
-        passwordFetcher.getLowerCasePasswords().then(
+        passwordFetcher.getPasswords().then(
             fetchedPasswords => {
                 const checker = new PasswordChecker(rules, fetchedPasswords);
 

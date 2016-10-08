@@ -7,7 +7,7 @@ const passwordFileLocation =
     "10_million_password_list_top_100.txt";
 
 export class PasswordData {
-    public getLowerCasePasswords(): Promise<string[]> {
+    public getPasswords(): Promise<string[]> {
         return axios.get(passwordFileLocation)
         .then(function (response) {
             return response.data.split("\n");;

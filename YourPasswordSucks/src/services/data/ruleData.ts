@@ -6,7 +6,7 @@ const ruleFileLocation =
     "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
 
 export class RuleData {
-    public getLowerCasePasswords(): Promise<string[]> {
+    public todo(): Promise<string[]> {
         return axios.get(ruleFileLocation)
         .then(function (response) {
             return response.data.split("\n");
