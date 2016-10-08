@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 
 import { IRule } from "./iRule";
+import { UnknownRule } from "./functions/unknownRule";
 import { NoopRule } from "./functions/noopRule";
 import { ReverseRule } from "./functions/reverseRule";
 import { DuplicateWordRule } from "./functions/duplicateWordRule";
@@ -80,7 +81,7 @@ export class RuleFunctionParser {
         const firstChar = functionStrArr[0];
         if(!(firstChar in functionMap)) {
             // unknown
-            return new NoopRule();
+            return new UnknownRule(functionStr);
         }
 
         try {
@@ -89,7 +90,7 @@ export class RuleFunctionParser {
                 );
         }
         catch (error) {
-            return new NoopRule();
+            return new UnknownRule(functionStr);
         }
     }
 }

@@ -12,13 +12,13 @@ export class PasswordChecker {
         private ruleData: RuleData,
         private ruleParser: RuleParser) { }
 
-    public Check(passwords: string[]): Promise<MatchResult[]> {
+    public Check(passwords: string[], exitOnFirstMatch: boolean): Promise<MatchResult[]> {
         return this.ruleData.getRules().then(fetchedRules => {
             var rules = fetchedRules.map(fetched => this.ruleParser.parse(fetched));
             return this.passwordData.getPasswords().then(
                 fetchedPasswords => {
                     const analyser = new Analyser(rules, fetchedPasswords);
-                    return analyser.isMatch(passwords, true);
+                    return analyser.isMatch(passwords, exitOnFirstMatch);
                 }
             )
         });

@@ -3,8 +3,6 @@ import {AxiosResponse} from "axios";
 import {Promise} from "es6-promise";
 import * as _ from "lodash";
 
-const ruleFileLocation =
-    "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
 const comment = "#";
 
 function removeLineComments(lines: string[]): string[] {
@@ -15,8 +13,11 @@ function removeLineComments(lines: string[]): string[] {
     }
 
 export class RuleData {
+    
+    constructor(private ruleUrl: string) {}
+
     public getRules(): Promise<string[]> {
-        return axios.get(ruleFileLocation)
+        return axios.get(this.ruleUrl)
         .then(function (response) {
             return removeLineComments(response.data.split("\n"));
         })

@@ -6,13 +6,11 @@ import { NoopRule } from "./services/rules/functions/noopRule";
 import { RuleFunctionParser } from './services/rules/ruleFunctionParser';
 import { RuleParser } from './services/rules/ruleParser';
 
-function SetAnswer(answer: string) {
-    document.getElementById("answer").innerText = answer;
-}
-
-function GetPasswordInput(): string {
-    return (<HTMLInputElement>document.getElementById("password")).value;
-}
+const passwordUrl =
+    "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
+    "10_million_password_list_top_100.txt";
+const ruleFileLocation =
+    "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
 
 class Main {
     public onSubmitPassword(): void {
@@ -20,10 +18,12 @@ class Main {
         const password = GetPasswordInput();
 
         const passwordChecker = new PasswordChecker(
-            new PasswordData(), new RuleData(), new RuleParser(new RuleFunctionParser())
+            new PasswordData(passwordUrl),
+            new RuleData(ruleFileLocation),
+            new RuleParser(new RuleFunctionParser())
             );
 
-        passwordChecker.Check([password]).then( matches => {
+        passwordChecker.Check([password], true).then( matches => {
             let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
             for(const match of matches) {
                 answer += "/n" + match.reason || "";
@@ -32,6 +32,14 @@ class Main {
         });
     }
 };
+
+function SetAnswer(answer: string) {
+    document.getElementById("answer").innerText = answer;
+}
+
+function GetPasswordInput(): string {
+    return (<HTMLInputElement>document.getElementById("password")).value;
+}
 
 const main = new Main();
 
