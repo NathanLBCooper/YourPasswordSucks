@@ -23,6 +23,9 @@ import { DuplicateFirstNRule } from "./functions/duplicateFirstNRule";
 import { DuplicateLastNRule } from "./functions/duplicateLastNRule";
 import { DuplicateAllCharsRule } from "./functions/duplicateAllCharsRule";
 import { SwapRule } from "./functions/swapRule";
+import { BitShiftLeftRule } from "./functions/bitShiftLeftRule";
+import { BitShiftRightRule } from "./functions/bitShiftRightRule";
+
 
 function CheckExists<T>(param: T): T {
     // Test for bad values and reading beyond the arrays
@@ -88,6 +91,8 @@ functionMap["E"] = params => new IgnoredRule();
 functionMap["k"] = params => new SwapRule(0,1);
 functionMap["K"] = params => new SwapRule(-1,-2);
 functionMap["*"] = params => new SwapRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
+functionMap["L"] = params => new BitShiftLeftRule(ParseBase36Number(params[0]));
+functionMap["R"] = params => new BitShiftRightRule(ParseBase36Number(params[0]));
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
