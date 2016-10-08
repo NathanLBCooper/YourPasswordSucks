@@ -1,4 +1,4 @@
-import { IRule } from '../rules/iRule';
+import { IRule } from './rules/iRule';
 
 export class MatchResult {
     public reason: string;

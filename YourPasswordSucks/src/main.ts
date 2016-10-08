@@ -1,4 +1,5 @@
-import { PasswordChecker } from "./services/checkers/passwordChecker";
+import { Analyser } from "./services/analyser";
+import { PasswordChecker } from "./services/passwordChecker";
 import { PasswordData } from "./services/data/passwordData";
 import { RuleData } from "./services/data/ruleData";
 import { NoopRule } from "./services/rules/functions/noopRule";
@@ -18,24 +19,16 @@ class Main {
         SetAnswer("calculating");
         const password = GetPasswordInput();
 
-        const passwordFetcher = new PasswordData();
-        const ruleFetcher = new RuleData();
+        const passwordChecker = new PasswordChecker(
+            new PasswordData(), new RuleData(), new RuleParser(new RuleFunctionParser())
+            );
 
-        const ruleFunctionParser = new RuleFunctionParser();
-        const ruleParser = new RuleParser(ruleFunctionParser);
-
-        ruleFetcher.getRules().then(fetchedRules => {
-            var rules = fetchedRules.map(fetched => ruleParser.parse(fetched));
-            passwordFetcher.getPasswords().then(
-                fetchedPasswords => {
-                    const checker = new PasswordChecker(rules, fetchedPasswords);
-
-                    const result = checker.isMatch(password, true);
-                    let answer = result.length !== 0 ? "Weak password: " : "Okay password: ";
-                    answer += " " + result[0].reason || "";
-                    SetAnswer(answer);
-                }
-            )
+        passwordChecker.Check([password]).then( matches => {
+            let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
+            for(const match of matches) {
+                answer += "/n" + match.reason || "";
+            }
+            SetAnswer(answer);
         });
     }
 };

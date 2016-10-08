@@ -1,10 +1,15 @@
-import { IRule } from '../rules/iRule';
+import { IRule } from './rules/iRule';
 import { MatchResult } from './matchResult';
 
-export class PasswordChecker {
+export class Analyser {
     constructor(private rules: IRule[], private passwordDictionary: string[]) {}
 
-    public isMatch_Array(passwords: string[], exitOnFirstMatch: boolean): MatchResult[] {
+    public isMatch(passwords: string[], exitOnFirstMatch: boolean): MatchResult[] {
+
+        if (passwords.length === 1) {
+            return this.isMatch_Str(passwords[0], exitOnFirstMatch);
+        }
+
         let matches: MatchResult[] = [];
         let remainingPasswords = passwords.slice(0);
 
@@ -23,7 +28,7 @@ export class PasswordChecker {
     /**
      * Checking one password string is more performant than checking [ password ]
      */
-    public isMatch(password: string, exitOnFirstMatch: boolean): MatchResult[] {
+    private isMatch_Str(password: string, exitOnFirstMatch: boolean): MatchResult[] {
         let matches: MatchResult[] = [];
 
         for (const rule of this.rules) {
