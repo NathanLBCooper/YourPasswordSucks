@@ -2,6 +2,7 @@ import * as _ from "lodash";
 
 import { IRule } from "./iRule";
 import { UnknownRule } from "./functions/unknownRule";
+import { IgnoredRule } from "./functions/ignoredRule";
 import { NoopRule } from "./functions/noopRule";
 import { ReverseRule } from "./functions/reverseRule";
 import { DuplicateWordRule } from "./functions/duplicateWordRule";
@@ -52,6 +53,12 @@ var functionMap: { [ruleChar: string]: (params: string[]) => IRule; } = { };
 */
 
 functionMap[":"] = params => new NoopRule();
+functionMap["l"] = params => new IgnoredRule();
+functionMap["u"] = params => new IgnoredRule();
+functionMap["c"] = params => new IgnoredRule();
+functionMap["C"] = params => new IgnoredRule();
+functionMap["t"] = params => new IgnoredRule();
+functionMap["T"] = params => new IgnoredRule();
 functionMap["r"] = params => new ReverseRule();
 functionMap["d"] = params => new DuplicateWordRule(1);
 functionMap["p"] = params => new DuplicateWordRule(ParseBase36Number(params[0]));
