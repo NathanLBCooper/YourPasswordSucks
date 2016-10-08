@@ -1,3 +1,7 @@
+function escapeRegex(str: string): string {
+    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 /** Replace all instances of X with Y */
 export class ReplaceRule {
     constructor(private searchValue: string, private replaceValue: string) {
@@ -12,6 +16,6 @@ export class ReplaceRule {
     }
 
     public doTransform(text: string): string {
-        return text.replace(new RegExp(this.searchValue, 'g'), this.replaceValue);
+        return text.replace(new RegExp(escapeRegex(this.searchValue), 'g'), this.replaceValue);
     }
 }

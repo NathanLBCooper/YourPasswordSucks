@@ -28,4 +28,9 @@ describe("ReplaceRule", () => {
         const rule = new ReplaceRule("s","s");
         expect(rule.transform("p@ssW0rd")).to.be.equal("p@ssW0rd");
     });
+
+    it("Replaces regex special characters", () => {
+        const rule = new ReplaceRule("$","1");
+        expect(rule.transform("p$ssW0rd")).to.be.equal("p1ssW0rd");
+    });
 });
