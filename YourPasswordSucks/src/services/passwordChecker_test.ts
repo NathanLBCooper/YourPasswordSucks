@@ -31,7 +31,7 @@ describe("PasswordChecker Integration Tests", () => {
         "} } }", // Rotates the word right (x3)         password -> ordpassw
         "r",    // Reverse the entire word              password -> drowssap
         "} ] ] {",  // Rotate right, delete last (x2), rotate left   password -> passwd
-        "*40 O61 O42" // unknown, Deletes 1/2 characters, starting at position 6/4  password -> passd
+        "~40 O61 O42" // unknown, Deletes 1/2 characters, starting at position 6/4  password -> passd
     ];
 
     const dictionaryPasswords = ["123456", "password", "12345678", "qwerty",
@@ -94,7 +94,7 @@ describe("PasswordChecker Integration Tests", () => {
             );
     });
 
-    it('passd found by *40 O61 O42', () => {
+    it('passd found by ~40 O61 O42', () => {
         return checker.Check(["passd"], false).then(
             matches => {
                 expect(matches.length).to.be.equal(1);
@@ -102,7 +102,7 @@ describe("PasswordChecker Integration Tests", () => {
                     "\"passd\" matches \"password\""
                     );
                 expect(matches[0].reason).to.contain(
-                    "unknown rule: *40\n" +
+                    "unknown rule: ~40\n" +
                     "    Ommits 1 characters, starting at position 6\n" + 
                     "    Ommits 2 characters, starting at position 4"
                     );
