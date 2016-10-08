@@ -30,9 +30,9 @@ class Main {
                 fetchedPasswords => {
                     const checker = new PasswordChecker(rules, fetchedPasswords);
 
-                    const result = checker.isMatch(password);
-                    let answer = result.isMatch ? "Weak password: " : "Okay password: ";
-                    answer += " " + result.reason || "";
+                    const result = checker.isMatch(password, true);
+                    let answer = result.length !== 0 ? "Weak password: " : "Okay password: ";
+                    answer += " " + result[0].reason || "";
                     SetAnswer(answer);
                 }
             )
