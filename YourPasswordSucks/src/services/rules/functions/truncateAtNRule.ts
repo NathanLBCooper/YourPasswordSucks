@@ -9,7 +9,7 @@ export class TruncateAtNRule {
     public transform: (text: string) => string;
 
     public toString(): string {
-        return "Truncate word at position N";
+        return "Truncate word at position " + this.position;
     }
 
     private doTransform(text: string): string {

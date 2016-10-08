@@ -7,6 +7,7 @@ export class PrependCharacterRule {
     }
 
     public toString(): string {
-        return "Prepend character X to front";
+        return "Prepend character " +
+            this.characterToPrepend + " to front";
     }
 }

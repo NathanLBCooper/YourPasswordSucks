@@ -7,6 +7,6 @@ export class DuplicateWordRule {
     }
 
     public toString(): string {
-        return "Append duplicated word" + this.times + "times";
+        return "Append duplicated word " + this.times + " times";
     }
 }

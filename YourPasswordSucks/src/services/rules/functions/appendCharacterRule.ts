@@ -7,6 +7,7 @@ export class AppendCharacterRule {
     }
 
     public toString(): string {
-        return "Append character X to end";
+        return "Append character " +
+            this.characterToAppend + " to end";
     }
 }

@@ -16,7 +16,7 @@ describe("CompositeRule", () => {
 
     it("provides decent toString", () => {
         const rule = new CompositeRule([new ReverseRule(), new AppendCharacterRule("@")]);
-        expect(rule.toString()).to.be.equal("Rules applied: \n    Reverse the entire word\n    Append character X to end");
+        expect(rule.toString()).to.be.equal("Rules applied: \n    Reverse the entire word\n    Append character @ to end");
     })
 
     it("provides decent toString for zero rules", () => {

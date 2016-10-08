@@ -5,9 +5,18 @@ import { NoopRule } from "./services/rules/functions/noopRule";
 import { RuleFunctionParser } from './services/rules/ruleFunctionParser';
 import { RuleParser } from './services/rules/ruleParser';
 
+function SetAnswer(answer: string) {
+    document.getElementById("answer").innerText = answer;
+}
+
+function GetPasswordInput(): string {
+    return (<HTMLInputElement>document.getElementById("password")).value;
+}
+
 class Main {
     public onSubmitPassword(): void {
-        const password = (<HTMLInputElement>document.getElementById("password")).value;
+        SetAnswer("calculating");
+        const password = GetPasswordInput();
 
         const passwordFetcher = new PasswordData();
         const ruleFetcher = new RuleData();
@@ -24,7 +33,7 @@ class Main {
                     const result = checker.isMatch(password);
                     let answer = result.isMatch ? "Weak password: " : "Okay password: ";
                     answer += " " + result.reason || "";
-                    document.getElementById("answer").innerText = answer;
+                    SetAnswer(answer);
                 }
             )
         });
