@@ -28,6 +28,8 @@ import { BitShiftRightRule } from "./functions/bitShiftRightRule";
 import { AsciiIncrementRule } from "./functions/asciiIncrementRule";
 import { AsciiDecrementRule } from "./functions/asciiDecrementRule";
 import { ReplaceCharRule } from "./functions/replaceCharRule";
+import { DuplicateFrontBlockRule } from "./functions/duplicateFrontBlockRule";
+import { DuplicateBackBlockRule } from "./functions/duplicateBackBlockRule";
 
 function CheckExists<T>(param: T): T {
     // Test for bad values and reading beyond the arrays
@@ -102,6 +104,8 @@ functionMap["-"] = params => new AsciiDecrementRule(ParseBase36Number(params[0])
 
 functionMap["."] = params => new ReplaceCharRule(ParseBase36Number(params[0]), 1);
 functionMap[","] = params => new ReplaceCharRule(ParseBase36Number(params[0]), -1);
+functionMap["y"] = params => new DuplicateFrontBlockRule(ParseBase36Number(params[0]));
+functionMap["Y"] = params => new DuplicateBackBlockRule(ParseBase36Number(params[0]));
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
