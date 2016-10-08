@@ -57,8 +57,8 @@ Name                ||Function||	Description                                  ||
 >Bitwise shift right||  RN	  || Bitwise shift right character @ N               ||	R2  	  || p@ssW0rd || p@9sW0rd	|| *
 >Ascii increment	|| +N 	  || Increment character @ N by 1 ascii value        ||	+2	      || p@ssW0rd || p@tsW0rd   || *
 >Ascii decrement	|| -N	  || Decrement character @ N by 1 ascii value	     || -1	      || p@ssW0rd || p?ssW0rd	|| *
-Replace N + 1	    || .N	  || Replaces character @ N with value at @ N plus 1 ||	.1	      || p@ssW0rd || psssW0rd	|| *
-Replace N - 1	    || ,N	  || Replaces character @ N with value at @ N minus 1||	,1        || p@ssW0rd || ppssW0rd   || *
+>Replace N + 1	    || .N	  || Replaces character @ N with value at @ N plus 1 ||	.1	      || p@ssW0rd || psssW0rd	|| *
+>Replace N - 1	    || ,N	  || Replaces character @ N with value at @ N minus 1||	,1        || p@ssW0rd || ppssW0rd   || *
 Duplicate block front||	yN    || Duplicates first N characters                   || y2	      || p@ssW0rd || p@p@ssW0rd	|| *
 Duplicate block back||	YN	  || Duplicates last N characters	                 || Y2	      || p@ssW0rd || p@ssW0rdrd	|| *S
 >Title              || E	  || Lower case the whole line,                      || E         || p@ssW0rd w0rld ||P@ssw0rd W0rld ||

@@ -27,6 +27,7 @@ import { BitShiftLeftRule } from "./functions/bitShiftLeftRule";
 import { BitShiftRightRule } from "./functions/bitShiftRightRule";
 import { AsciiIncrementRule } from "./functions/asciiIncrementRule";
 import { AsciiDecrementRule } from "./functions/asciiDecrementRule";
+import { ReplaceCharRule } from "./functions/replaceCharRule";
 
 function CheckExists<T>(param: T): T {
     // Test for bad values and reading beyond the arrays
@@ -92,11 +93,15 @@ functionMap["E"] = params => new IgnoredRule();
 functionMap["k"] = params => new SwapRule(0,1);
 functionMap["K"] = params => new SwapRule(-1,-2);
 functionMap["*"] = params => new SwapRule(ParseBase36Number(params[0]), ParseBase36Number(params[1]));
+
 // todo, we don't obey case-sensitive commands, this might cause different outcomes
 functionMap["L"] = params => new BitShiftLeftRule(ParseBase36Number(params[0]));
 functionMap["R"] = params => new BitShiftRightRule(ParseBase36Number(params[0]));
 functionMap["+"] = params => new AsciiIncrementRule(ParseBase36Number(params[0]));
 functionMap["-"] = params => new AsciiDecrementRule(ParseBase36Number(params[0]));
+
+functionMap["."] = params => new ReplaceCharRule(ParseBase36Number(params[0]), 1);
+functionMap[","] = params => new ReplaceCharRule(ParseBase36Number(params[0]), -1);
 
 export class RuleFunctionParser {
     // todo turns one rule function (eg "{") into an IRule
