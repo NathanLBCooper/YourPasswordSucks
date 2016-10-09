@@ -19,7 +19,8 @@ export class RuleData {
     public getRules(): Promise<string[]> {
         return axios.get(this.ruleUrl)
         .then(function (response) {
-            return removeLineComments(response.data.split("\n"));
+            // Add do-nothing rule to any rule file
+            return [":"].concat(removeLineComments(response.data.split("\n")));
         })
         .catch(function (error) {
             console.log(error);
