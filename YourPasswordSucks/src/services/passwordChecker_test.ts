@@ -55,7 +55,8 @@ describe("PasswordChecker Integration Tests", () => {
             );
         checker = new PasswordChecker(
             passwordDataMock.object, ruleDataMock.object,
-            new RuleParser(new RuleFunctionParser())
+            new RuleParser(new RuleFunctionParser()),
+            new Analyser()
             );
     });
 

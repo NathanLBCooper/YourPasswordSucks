@@ -10,18 +10,19 @@ export class PasswordChecker {
 
     constructor(private passwordData: PasswordData,
         private ruleData: RuleData,
-        private ruleParser: RuleParser) { }
+        private ruleParser: RuleParser,
+        private analyser: Analyser) { }
 
     public Check(passwords: string[], exitOnFirstMatch: boolean): Promise<MatchResult[]> {
         return this.ruleData.getRules().then(fetchedRules => {
-            var rules = fetchedRules.map(fetched => this.ruleParser.parse(fetched));
             return this.passwordData.getPasswords().then(
                 fetchedPasswords => {
-                    const analyser = new Analyser(rules, fetchedPasswords);
-                    return analyser.getMatches(passwords, exitOnFirstMatch);
+                    const rules = fetchedRules.map(rule => this.ruleParser.parse(rule));
+                    return this.analyser.getMatches(
+                        passwords, rules, fetchedPasswords, exitOnFirstMatch
+                        );
                 }
             )
         });
     }
-
 }

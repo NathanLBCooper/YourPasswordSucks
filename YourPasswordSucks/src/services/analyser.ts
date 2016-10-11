@@ -3,19 +3,19 @@ import { MatchResult } from './matchResult';
 import { RuleParser } from './rules/ruleParser';
 
 export class Analyser {
-    constructor(private rules: IRule[], private passwordDictionary: string[]) {}
-
-    public getMatches(passwords: string[], exitOnFirstMatch: boolean): MatchResult[] {
+    public getMatches(passwords: string[], rules: IRule[],
+        passwordDictionary: string[], exitOnFirstMatch: boolean): MatchResult[] {
 
         if (passwords.length === 1) {
-            return getMatches_Str(passwords[0], exitOnFirstMatch);
+            return this.getMatches_Str(passwords[0], rules,
+                passwordDictionary, exitOnFirstMatch);
         }
 
         let matches: MatchResult[] = [];
         let remainingPasswords = passwords.slice(0);
 
-        for (const rule of this.rules) {
-            for (const dictionaryItem of this.passwordDictionary) {
+        for (const rule of rules) {
+            for (const dictionaryItem of passwordDictionary) {
                 findMatches(rule, dictionaryItem, remainingPasswords, matches, exitOnFirstMatch);
                 if (remainingPasswords.length === 0){
                     return matches;
@@ -25,27 +25,28 @@ export class Analyser {
 
         return matches;
     }
-}
 
-/**
- * Checking one password string is more performant than checking [ password ]
- */
-function getMatches_Str(password: string, exitOnFirstMatch: boolean): MatchResult[] {
-    let matches: MatchResult[] = [];
+    /**
+     * Checking one password string is more performant than checking [ password ]
+     */
+    private getMatches_Str(password: string, rules: IRule[],
+        passwordDictionary: string[], exitOnFirstMatch: boolean): MatchResult[] {
+        let matches: MatchResult[] = [];
 
-    for (const rule of this.rules) {
-        for (const dictionaryItem of this.passwordDictionary) {
-            const transformedItem = rule.transform(dictionaryItem);
-            if (compareString(transformedItem, password)){
-                matches.push(new MatchResult(password, dictionaryItem, rule));
-                if (exitOnFirstMatch) {
-                    return matches;
+        for (const rule of rules) {
+            for (const dictionaryItem of passwordDictionary) {
+                const transformedItem = rule.transform(dictionaryItem);
+                if (compareString(transformedItem, password)){
+                    matches.push(new MatchResult(password, dictionaryItem, rule));
+                    if (exitOnFirstMatch) {
+                        return matches;
+                    }
                 }
             }
         }
-    }
 
-    return matches;
+        return matches;
+    }
 }
 
 /**

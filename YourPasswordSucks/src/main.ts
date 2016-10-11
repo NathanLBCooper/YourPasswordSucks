@@ -21,7 +21,8 @@ class Main {
         const passwordChecker = new PasswordChecker(
             new PasswordData(passwordUrl),
             new RuleData(ruleFileLocation),
-            new RuleParser(new RuleFunctionParser())
+            new RuleParser(new RuleFunctionParser()),
+            new Analyser()
             );
 
         passwordChecker.Check([password], true).then( matches => {
