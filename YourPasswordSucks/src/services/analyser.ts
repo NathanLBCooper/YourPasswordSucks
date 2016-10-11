@@ -1,13 +1,14 @@
 import { IRule } from './rules/iRule';
 import { MatchResult } from './matchResult';
+import { RuleParser } from './rules/ruleParser';
 
 export class Analyser {
     constructor(private rules: IRule[], private passwordDictionary: string[]) {}
 
-    public isMatch(passwords: string[], exitOnFirstMatch: boolean): MatchResult[] {
+    public getMatches(passwords: string[], exitOnFirstMatch: boolean): MatchResult[] {
 
         if (passwords.length === 1) {
-            return this.isMatch_Str(passwords[0], exitOnFirstMatch);
+            return getMatches_Str(passwords[0], exitOnFirstMatch);
         }
 
         let matches: MatchResult[] = [];
@@ -24,27 +25,27 @@ export class Analyser {
 
         return matches;
     }
+}
 
-    /**
-     * Checking one password string is more performant than checking [ password ]
-     */
-    private isMatch_Str(password: string, exitOnFirstMatch: boolean): MatchResult[] {
-        let matches: MatchResult[] = [];
+/**
+ * Checking one password string is more performant than checking [ password ]
+ */
+function getMatches_Str(password: string, exitOnFirstMatch: boolean): MatchResult[] {
+    let matches: MatchResult[] = [];
 
-        for (const rule of this.rules) {
-            for (const dictionaryItem of this.passwordDictionary) {
-                const transformedItem = rule.transform(dictionaryItem);
-                if (compareString(transformedItem, password)){
-                    matches.push(new MatchResult(password, dictionaryItem, rule));
-                    if (exitOnFirstMatch) {
-                        return matches;
-                    }
+    for (const rule of this.rules) {
+        for (const dictionaryItem of this.passwordDictionary) {
+            const transformedItem = rule.transform(dictionaryItem);
+            if (compareString(transformedItem, password)){
+                matches.push(new MatchResult(password, dictionaryItem, rule));
+                if (exitOnFirstMatch) {
+                    return matches;
                 }
             }
         }
-
-        return matches;
     }
+
+    return matches;
 }
 
 /**

@@ -18,7 +18,7 @@ export class PasswordChecker {
             return this.passwordData.getPasswords().then(
                 fetchedPasswords => {
                     const analyser = new Analyser(rules, fetchedPasswords);
-                    return analyser.isMatch(passwords, exitOnFirstMatch);
+                    return analyser.getMatches(passwords, exitOnFirstMatch);
                 }
             )
         });
