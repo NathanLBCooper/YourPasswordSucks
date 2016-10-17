@@ -7,7 +7,7 @@ import { RuleFunctionParser } from "./services/rules/ruleFunctionParser";
 import { RuleParser } from "./services/rules/ruleParser";
 import { RuleCompatibility, CompatibilityResult } from "./ruleCompatibility";
 
-import Worker = require("worker!./worker");
+// import Worker = require("worker!./worker");
 
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
@@ -18,22 +18,17 @@ const ruleFileLocation =
 class Main {
     public onSubmitPassword(): void {
 
-        var worker = new Worker();
-        worker.postMessage("hello");
-        worker.onmessage = function(event) { alert(event.data) };
-        worker.addEventListener("message", function(event) {alert(event.data)});
+        StartCalculating();
+        const password = GetPasswordInput();
 
-        // StartCalculating();
-        // const password = GetPasswordInput();
+        const passwordChecker = new PasswordChecker(
+            new PasswordData(passwordUrl),
+            new RuleData(ruleFileLocation),
+            new RuleParser(new RuleFunctionParser()),
+            new Analyser()
+            );
 
-        // const passwordChecker = new PasswordChecker(
-        //     new PasswordData(passwordUrl),
-        //     new RuleData(ruleFileLocation),
-        //     new RuleParser(new RuleFunctionParser()),
-        //     new Analyser()
-        //     );
-
-        // passwordChecker.Check([password], true).then( matches => {
+        passwordChecker.CheckConcurrently([password], true);//.then( matches => {
         //     let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
         //     for(const match of matches) {
         //         answer += "/n" + match.reason || "";
@@ -41,6 +36,9 @@ class Main {
         //     SetAnswer(answer);
         //     StopCalculating();
         // });
+
+        // todo remove
+        StopCalculating();
     }
 
     public onSubmitCompabilityTest(): void {

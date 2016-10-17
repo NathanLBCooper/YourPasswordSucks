@@ -3,11 +3,6 @@ import { MatchResult } from './matchResult';
 import { RuleParser } from './rules/ruleParser';
 
 export class Analyser {
-    // todo remove
-    public bullshitFunction(): number {
-        return 5;
-    }
-
     public getMatches(passwords: string[], rules: IRule[],
         passwordDictionary: string[], exitOnFirstMatch: boolean): MatchResult[] {
 
