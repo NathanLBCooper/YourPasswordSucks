@@ -13,7 +13,8 @@
     "axios": "^0.14.0",
     "es6-promise": "^4.0.5",
     "lodash": "^4.15.0",
-    "ts-loader": "^0.8.2"
+    "ts-loader": "^0.8.2",
+    "worker-loader": "^0.7.1"
   },
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",

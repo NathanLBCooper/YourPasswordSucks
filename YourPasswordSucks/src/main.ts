@@ -7,6 +7,8 @@ import { RuleFunctionParser } from "./services/rules/ruleFunctionParser";
 import { RuleParser } from "./services/rules/ruleParser";
 import { RuleCompatibility, CompatibilityResult } from "./ruleCompatibility";
 
+import Worker = require("worker!./worker");
+
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
     "10_million_password_list_top_100.txt";
@@ -15,24 +17,30 @@ const ruleFileLocation =
 
 class Main {
     public onSubmitPassword(): void {
-        StartCalculating();
-        const password = GetPasswordInput();
 
-        const passwordChecker = new PasswordChecker(
-            new PasswordData(passwordUrl),
-            new RuleData(ruleFileLocation),
-            new RuleParser(new RuleFunctionParser()),
-            new Analyser()
-            );
+        var worker = new Worker();
+        worker.postMessage("hello");
+        worker.onmessage = function(event) { alert(event.data) };
+        worker.addEventListener("message", function(event) {alert(event.data)});
 
-        passwordChecker.Check([password], true).then( matches => {
-            let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
-            for(const match of matches) {
-                answer += "/n" + match.reason || "";
-            }
-            SetAnswer(answer);
-            StopCalculating();
-        });
+        // StartCalculating();
+        // const password = GetPasswordInput();
+
+        // const passwordChecker = new PasswordChecker(
+        //     new PasswordData(passwordUrl),
+        //     new RuleData(ruleFileLocation),
+        //     new RuleParser(new RuleFunctionParser()),
+        //     new Analyser()
+        //     );
+
+        // passwordChecker.Check([password], true).then( matches => {
+        //     let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
+        //     for(const match of matches) {
+        //         answer += "/n" + match.reason || "";
+        //     }
+        //     SetAnswer(answer);
+        //     StopCalculating();
+        // });
     }
 
     public onSubmitCompabilityTest(): void {
