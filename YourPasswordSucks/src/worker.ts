@@ -1,4 +1,5 @@
-import _ = require('lodash')
+import _ = require("lodash")
+import { Analyser } from "./services/analyser"
 
 /** Using window.onmessage and declaring postmessage here.
  * This is wrong because we're inside a webworker.
@@ -8,6 +9,7 @@ declare function postMessage(data: any) : void;
 
 self.onmessage = event => {
 
-    var output = _.add(event.data.length, 3);
+    var analyser = new Analyser();
+    var output = _.add(event.data.length, analyser.bullshitFunction());
     postMessage(output);
 }
