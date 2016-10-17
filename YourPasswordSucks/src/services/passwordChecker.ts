@@ -43,7 +43,11 @@ export class PasswordChecker {
                        passwords: passwords, passwordDictionary: fetchedPasswords, ruleSet: fetchedRules
                     };
 
-                    return StartWorker(totalWork);
+                    const results: Promise<MatchResult[]>[] = [StartWorker(totalWork)];
+
+                    return Promise.all(results).then( (resultArrays: MatchResult[][]) => {
+                        return [].concat.apply([], resultArrays);
+                    }) 
                 }
             )
         });
