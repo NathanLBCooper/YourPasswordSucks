@@ -35,25 +35,30 @@ export class PasswordChecker {
         });
     }
 
-    public CheckConcurrently(passwords: string[], exitOnFirstMatch: boolean): any {
+    public CheckConcurrently(passwords: string[], maxConcurrency: number): Promise<MatchResult[]> {
         return this.ruleData.getRules().then(fetchedRules => {
             return this.passwordData.getPasswords().then(
                 fetchedPasswords => {
-                   const work: AnalysisWork = {
+                    const totalWork: AnalysisWork = {
                        passwords: passwords, passwordDictionary: fetchedPasswords, ruleSet: fetchedRules
                     };
-                    var worker: IWebWorker = new Worker();
-                    worker.postMessage(work);
-                    worker.onmessage = function(event) {
-                        // todo
-                        const results: MatchResult[] = event.data;
-                        if(results.length > 0) {
-                            alert(results[0].reason);
-                        }
-                        worker.terminate();
-                    };
+
+                    return StartWorker(totalWork);
                 }
             )
         });
     }
+}
+
+function StartWorker(work: AnalysisWork): Promise<MatchResult[]>{
+    return new Promise(function(resolve,reject){
+        var worker: IWebWorker = new Worker();
+        alert("worker posted work of size: " + work.passwordDictionary.length * work.passwords.length * work.ruleSet.length);
+        worker.postMessage(work);
+        worker.onmessage = function(event) {
+            alert("worker returning with " + event.data.length + " results");
+            worker.terminate();
+            resolve(event.data);
+        }
+    });
 }

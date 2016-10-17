@@ -1,5 +1,5 @@
 export class AnalysisWork {
-    passwords: string[]
-    passwordDictionary: string[]
-    ruleSet: string[]
+    constructor(public passwords: string[],
+    public passwordDictionary: string[],
+    public ruleSet: string[]) {}
 }

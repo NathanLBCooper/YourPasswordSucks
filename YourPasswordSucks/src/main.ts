@@ -28,14 +28,14 @@ class Main {
             new Analyser()
             );
 
-        passwordChecker.CheckConcurrently([password], true);//.then( matches => {
-        //     let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
-        //     for(const match of matches) {
-        //         answer += "/n" + match.reason || "";
-        //     }
-        //     SetAnswer(answer);
-        //     StopCalculating();
-        // });
+        passwordChecker.CheckConcurrently([password], 10).then( matches => {
+            let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
+            for(const match of matches) {
+                answer += "/n" + match.reason || "";
+            }
+            SetAnswer(answer);
+            StopCalculating();
+        });
 
         // todo remove
         StopCalculating();
