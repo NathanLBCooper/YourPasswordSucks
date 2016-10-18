@@ -8,8 +8,9 @@ The same principle as a [Hashcat Rule-based Attack](https://hashcat.net/wiki/dok
 
 Rule support is not complete, currently 99.58319456639116% of the rule-combinations in the dive ruleset are fully supported. Check out [ruleDoco.txt](/YourPasswordSucks/src/services/rules/ruleDoco.txt) to check supported rules. Unknown rules will be treated as no-ops. Eg `se3 5XX ss$` (5 is unsupported/unknown), will be treated as `se3 : ss$` (`:` is a noop). 
 
+## Performance
 
-> *!! Currently, the performance of this solution is pretty bad. Rule sets and dictionaries have to be quite big to be useful. Javascript is a bit of a drag here. I might look into web workers or something. In the meantime, I would suggest maybe using a larger dictionary, but smaller ruleset than currently in the main.ts file. There are no progress bars here: start small, and scale up from there.*
+The size of the downloaded rule set and dictionary are the main levers on performance. These can be changed at the top of main.ts. There are performance related comments in that file. Depending on what you set there, the password check could take between seconds and hours. Work is split up by the application into "chunks", which are give to WebWorkers. Progress through these chunks is shown on the screen as the app is calaculating.
 
 ## Getting started
 
