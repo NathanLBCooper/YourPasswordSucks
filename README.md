@@ -10,7 +10,9 @@ Rule support is not complete, currently 99.58319456639116% of the rule-combinati
 
 ## Performance
 
-The size of the downloaded rule set and dictionary are the main levers on performance. These can be changed at the top of main.ts. There are performance related comments in that file. Depending on what you set there, the password check could take between seconds and hours. Work is split up by the application into "chunks", which are give to WebWorkers. Progress through these chunks is shown on the screen as the app is calaculating.
+> The size of the downloaded rule set and dictionary are the main levers on performance. These can be changed at the top of main.ts. There are performance related comments in that file. Depending on what you set there, the password check could take between seconds and hours. Work is split up by the application into "chunks", which are give to WebWorkers. Progress through these chunks is shown on the screen as the app is calaculating.
+
+//// **TODO This is all lies, and so are the performance tests. Because each webworker bails as soon as  it finds something!!!!!**
 
 ## Getting started
 
