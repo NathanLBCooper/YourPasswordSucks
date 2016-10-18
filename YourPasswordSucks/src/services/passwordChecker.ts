@@ -5,7 +5,7 @@ import { RuleData } from "./data/ruleData";
 import { RuleParser } from './rules/ruleParser';
 import { Analyser } from "./analyser";
 import { MatchResult } from "./matchResult";
-import { AnalysisWork } from "./analysisWork";
+import { AnalysisWork, SplitWork } from "./analysisWork";
 
 import Worker = require("worker!../worker");
 
@@ -43,11 +43,13 @@ export class PasswordChecker {
                        passwords: passwords, passwordDictionary: fetchedPasswords, ruleSet: fetchedRules
                     };
 
-                    const results: Promise<MatchResult[]>[] = [StartWorker(totalWork)];
+                    // todo, maxConcurrency???, magic number 100000, progress reporting, tests
+                    const workChunks = SplitWork(totalWork, 100000);
+                    const results: Promise<MatchResult[]>[] = workChunks.map(work => StartWorker(work));
 
                     return Promise.all(results).then( (resultArrays: MatchResult[][]) => {
                         return [].concat.apply([], resultArrays);
-                    }) 
+                    });
                 }
             )
         });
@@ -57,10 +59,8 @@ export class PasswordChecker {
 function StartWorker(work: AnalysisWork): Promise<MatchResult[]>{
     return new Promise(function(resolve,reject){
         var worker: IWebWorker = new Worker();
-        alert("worker posted work of size: " + work.passwordDictionary.length * work.passwords.length * work.ruleSet.length);
         worker.postMessage(work);
         worker.onmessage = function(event) {
-            alert("worker returning with " + event.data.length + " results");
             worker.terminate();
             resolve(event.data);
         }

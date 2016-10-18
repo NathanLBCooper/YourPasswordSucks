@@ -7,11 +7,9 @@ import { RuleFunctionParser } from "./services/rules/ruleFunctionParser";
 import { RuleParser } from "./services/rules/ruleParser";
 import { RuleCompatibility, CompatibilityResult } from "./ruleCompatibility";
 
-// import Worker = require("worker!./worker");
-
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
-    "10_million_password_list_top_100.txt";
+    "10_million_password_list_top_1000.txt";
 const ruleFileLocation =
     "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
 
@@ -31,7 +29,7 @@ class Main {
         passwordChecker.CheckConcurrently([password], 10).then( matches => {
             let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
             for(const match of matches) {
-                answer += "/n" + match.reason || "";
+                answer += "\n\nMATCH:\n" + match.reason || "";
             }
             SetAnswer(answer);
             StopCalculating();
