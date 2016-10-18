@@ -45,7 +45,7 @@ export class PasswordChecker {
                     };
 
                     // todo, is starting all web workers at once okay?
-                    const workChunks = SplitWork(totalWork, 100000);
+                    const workChunks = SplitWork(totalWork, chunkSize);
                     progressLogger.setTotalWorkUnits(workChunks.length);;
                     const results: Promise<MatchResult[]>[] = workChunks.map(work => StartWorker(work, progressLogger));
 

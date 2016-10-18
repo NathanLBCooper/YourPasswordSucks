@@ -10,10 +10,23 @@ import { ProgressLogger } from "./services/progressLogger";
 
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
-    "10_million_password_list_top_1000.txt";
+    "10_million_password_list_top_100000.txt";
 const ruleFileLocation =
     "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
-const workChunkSize = 10000;
+const workChunkSize = 10000000; 
+
+/** On 1 password (password123), 1000 passwords in dictionary and dive rules (about 100 000 rules):
+ *  100 000 took 45 seconds, 1000000 took 25 seconds, 10000000 took 20 seconds
+ * 
+ * On 1 password (password123), 10 000 passwords in dictionary and dive rules:
+ * 10 000 000 took 7 seconds (what? no.)
+ * 
+ * On 1 password (password123), 100 000 passwords in dictionary and dive rules:
+ * 10 000 000 took 6 minutes 18 seconds.
+ * That's about 10 billion comparisons and many more rule function transforms btw
+ * 
+ * Maybe 100 000 is too many rules? The password list go to 1 000 000, which would take about an hour?
+*/
 
 class Main {
     public onSubmitPassword(): void {
