@@ -6,12 +6,14 @@ import { NoopRule } from "./services/rules/functions/noopRule";
 import { RuleFunctionParser } from "./services/rules/ruleFunctionParser";
 import { RuleParser } from "./services/rules/ruleParser";
 import { RuleCompatibility, CompatibilityResult } from "./ruleCompatibility";
+import { ProgressLogger } from "./services/progressLogger";
 
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
     "10_million_password_list_top_1000.txt";
 const ruleFileLocation =
     "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
+const workChunkSize = 10000;
 
 class Main {
     public onSubmitPassword(): void {
@@ -26,7 +28,9 @@ class Main {
             new Analyser()
             );
 
-        passwordChecker.CheckConcurrently([password], 10).then( matches => {
+        const progressLogger = new ProgressLogger(SetProgress);
+
+        passwordChecker.CheckConcurrently([password], progressLogger, workChunkSize).then( matches => {
             let answer = matches.length !== 0 ? "Weak password: " : "Okay password: ";
             for(const match of matches) {
                 answer += "\n\nMATCH:\n" + match.reason || "";
@@ -52,8 +56,12 @@ class Main {
     }
 };
 
-function SetAnswer(answer: string) {
+function SetAnswer(answer: string): void {
     document.getElementById("answer").innerText = answer;
+}
+
+function SetProgress(progress: string): void {
+    document.getElementById("progress").innerText = progress;
 }
 
 function GetPasswordInput(): string {

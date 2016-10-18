@@ -6,6 +6,7 @@ import { RuleParser } from './rules/ruleParser';
 import { Analyser } from "./analyser";
 import { MatchResult } from "./matchResult";
 import { AnalysisWork, SplitWork } from "./analysisWork";
+import { ProgressLogger } from "./progressLogger";
 
 import Worker = require("worker!../worker");
 
@@ -35,7 +36,7 @@ export class PasswordChecker {
         });
     }
 
-    public CheckConcurrently(passwords: string[], maxConcurrency: number): Promise<MatchResult[]> {
+    public CheckConcurrently(passwords: string[], progressLogger: ProgressLogger, chunkSize: number): Promise<MatchResult[]> {
         return this.ruleData.getRules().then(fetchedRules => {
             return this.passwordData.getPasswords().then(
                 fetchedPasswords => {
@@ -43,9 +44,10 @@ export class PasswordChecker {
                        passwords: passwords, passwordDictionary: fetchedPasswords, ruleSet: fetchedRules
                     };
 
-                    // todo, maxConcurrency???, magic number 100000, progress reporting, tests
+                    // todo, is starting all web workers at once okay?
                     const workChunks = SplitWork(totalWork, 100000);
-                    const results: Promise<MatchResult[]>[] = workChunks.map(work => StartWorker(work));
+                    progressLogger.setTotalWorkUnits(workChunks.length);;
+                    const results: Promise<MatchResult[]>[] = workChunks.map(work => StartWorker(work, progressLogger));
 
                     return Promise.all(results).then( (resultArrays: MatchResult[][]) => {
                         return [].concat.apply([], resultArrays);
@@ -56,11 +58,12 @@ export class PasswordChecker {
     }
 }
 
-function StartWorker(work: AnalysisWork): Promise<MatchResult[]>{
+function StartWorker(work: AnalysisWork, progressLogger: ProgressLogger): Promise<MatchResult[]>{
     return new Promise(function(resolve,reject){
         var worker: IWebWorker = new Worker();
         worker.postMessage(work);
         worker.onmessage = function(event) {
+            progressLogger.reportWorkUnitComplete();
             worker.terminate();
             resolve(event.data);
         }

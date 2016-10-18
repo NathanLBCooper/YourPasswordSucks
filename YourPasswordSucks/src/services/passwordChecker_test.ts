@@ -10,6 +10,8 @@ import { Analyser } from "./analyser";
 import { MatchResult } from "./matchResult";
 import { PasswordChecker } from "./passwordChecker";
 
+// todo tests for the concurrency Check
+
 /** Basic sanity test of the whole system
  * Find some rules here:
  *  https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule
