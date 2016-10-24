@@ -10,22 +10,22 @@ import { ProgressLogger } from "./services/progressLogger";
 
 const passwordUrl =
     "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/" +
-    "10_million_password_list_top_100000.txt";
+    "10_million_password_list_top_10000.txt";
 const ruleFileLocation =
     "https://raw.githubusercontent.com/hashcat/hashcat/master/rules/dive.rule"
 const workChunkSize = 10000000; 
 
-/** On 1 password (password123), 1000 passwords in dictionary and dive rules (about 100 000 rules):
- *  100 000 took 45 seconds, 1000000 took 25 seconds, 10000000 took 20 seconds
+/**
+ * PERFORMANCE:
+ * // todo, impelement exitOnFirstMatch for concurrent
  * 
- * On 1 password (password123), 10 000 passwords in dictionary and dive rules:
- * 10 000 000 took 7 seconds (what? no.)
+ *  On 1 password (password123), 1000 passwords in dictionary and dive rules (about 100 000 rules):
+ *  1000000 took 32 seconds, 10000000 took 27 seconds.
  * 
- * On 1 password (password123), 100 000 passwords in dictionary and dive rules:
- * 10 000 000 took 6 minutes 18 seconds.
- * That's about 10 billion comparisons and many more rule function transforms btw
+ * On 1 password, 10000 passwords in dictionary and dive rules (about 100 000 rules):
+ *                           10000000 took 4 minutes 40 seconds
  * 
- * Maybe 100 000 is too many rules? The password list go to 1 000 000, which would take about an hour?
+ * Largest password list (expect 10 million) is 1000000, which is 100 times more. Ie just under 8 hours.
 */
 
 class Main {

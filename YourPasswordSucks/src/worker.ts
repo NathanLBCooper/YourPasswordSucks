@@ -19,7 +19,7 @@ self.onmessage = event => {
     const rules = work.ruleSet.map(rule => ruleParser.parse(rule));
 
     const matches: MatchResult[] =
-        analyser.getMatches(work.passwords, rules, work.passwordDictionary, true);
+        analyser.getMatches(work.passwords, rules, work.passwordDictionary, false);
 
     postMessage(matches);
 }
